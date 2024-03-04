@@ -1,1 +1,1 @@
-# phaser-minigames
+# Phaser Minigames
