@@ -18,6 +18,10 @@ class mainScene {
     }
 
     update() {
+        if(this.physics.overlap(this.player,this.coin)){
+            this.hit();
+        }
+
         if (this.arrow.right.isDown) {
             this.player.x += 3;
         } else if (this.arrow.left.isDown) {
@@ -29,6 +33,15 @@ class mainScene {
         } else if (this.arrow.up.isDown) {
             this.player.y -= 3;
         }
+    }
+
+    hit() {
+        this.coin.x = Phaser.Math.Between(100, 600);
+        this.coin.y = Phaser.Math.Between(100, 300);
+
+        this.score += 10;
+
+        this.scoreText.setText('score: ' + this.score);
     }
 }
 
