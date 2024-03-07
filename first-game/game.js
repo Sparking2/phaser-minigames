@@ -42,6 +42,14 @@ class mainScene {
         this.score += 10;
 
         this.scoreText.setText('score: ' + this.score);
+
+        this.tweens.add({
+            targets: this.player,
+            duration: 200,
+            scaleX: 1.2,
+            scaleY: 1.2,
+            yoyo: true,
+        });
     }
 }
 
