@@ -2,13 +2,13 @@ import {Scene} from "phaser"
 
 class Main extends Scene {
     private player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-    // private up: Phaser.Input.Keyboard.Key | undefined;
-    // private left: Phaser.Input.Keyboard.Key | undefined;
-    // private right: Phaser.Input.Keyboard.Key | undefined;
     private arrow: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
+    private walls: Phaser.Physics.Arcade.StaticGroup | undefined;
 
     preload() {
         this.load.image('player', 'assets/player.png');
+        this.load.image('wallV', 'assets/wallVertical.png');
+        this.load.image('wallH', 'assets/wallHorizontal.png');
     }
 
     create() {
@@ -17,18 +17,21 @@ class Main extends Scene {
 
         this.arrow = this.input.keyboard?.createCursorKeys();
 
-        // this.up = this.input.keyboard?.addKey("up");
-        // this.left = this.input.keyboard?.addKey("left");
-        // this.right = this.input.keyboard?.addKey("right");
+        this.createWorld()
     }
 
     update() {
+        this.physics.collide(this.player, this.walls)
         this.movePlayer();
+
+        if (this.player.y > 340 || this.player.y < 0) {
+            this.playerDie();
+        }
     }
 
     movePlayer() {
         if (this.arrow?.left.isDown) {
-            this.player.body.velocity.y = -200;
+            this.player.body.velocity.x = -200;
         } else if (this.arrow?.right.isDown) {
             this.player.body.velocity.x = 200;
         } else {
@@ -38,6 +41,24 @@ class Main extends Scene {
         if (this.arrow?.up.isDown && this.player.body.onFloor()) {
             this.player.body.velocity.y = -320
         }
+    }
+
+    createWorld() {
+        this.walls = this.physics.add.staticGroup();
+        this.walls.create(10, 170, 'wallV');
+        this.walls.create(490, 170, 'wallV');
+        this.walls.create(50, 10, 'wallH');
+        this.walls.create(450, 10, 'wallH');
+        this.walls.create(50, 330, 'wallH');
+        this.walls.create(450, 330, 'wallH');
+        this.walls.create(0, 170, 'wallH');
+        this.walls.create(500, 170, 'wallH');
+        this.walls.create(250, 90, 'wallH');
+        this.walls.create(250, 250, 'wallH');
+    }
+
+    playerDie() {
+        this.scene.start('main');
     }
 }
 
