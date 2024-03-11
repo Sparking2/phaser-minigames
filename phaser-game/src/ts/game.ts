@@ -2,31 +2,64 @@ import {Scene} from "phaser"
 
 class Main extends Scene {
     private player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-    private arrow: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
-    private walls: Phaser.Physics.Arcade.StaticGroup | undefined;
+    private arrow?: Phaser.Types.Input.Keyboard.CursorKeys;
+    private walls?: Phaser.Physics.Arcade.StaticGroup;
+    private coin?: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    private scoreLabel?: Phaser.GameObjects.Text;
+    private score: number = 0;
 
     preload() {
         this.load.image('player', 'assets/player.png');
         this.load.image('wallV', 'assets/wallVertical.png');
         this.load.image('wallH', 'assets/wallHorizontal.png');
+        this.load.image('coin', 'assets/coin.png');
     }
 
     create() {
+        this.coin = this.physics.add.sprite(60, 130, 'coin');
+
         this.player = this.physics.add.sprite(250, 170, 'player');
         this.player.body.gravity.y = 500;
 
         this.arrow = this.input.keyboard?.createCursorKeys();
 
+        this.scoreLabel = this.add.text(30, 25, 'score: 0', {font: '18px Arial', color: '#fff'});
+        this.score = 0;
+
         this.createWorld()
     }
 
     update() {
+        if (this.physics.overlap(this.player, this.coin)) {
+            this.takeCoin();
+        }
+
         this.physics.collide(this.player, this.walls)
         this.movePlayer();
 
         if (this.player.y > 340 || this.player.y < 0) {
             this.playerDie();
         }
+    }
+
+    takeCoin() {
+        this.updateCoinPosition();
+        this.score += 5;
+        this.scoreLabel?.setText('score: ' + this.score);
+    }
+
+    updateCoinPosition() {
+        let positions = [
+            {x: 140, y: 60},
+            {x: 360, y: 60},
+            {x: 60, y: 140},
+            {x: 440, y: 140},
+            {x: 130, y: 300},
+            {x: 370, y: 300},
+        ]
+        positions = positions.filter(coin => coin.x !== this.coin?.x);
+        let newPosition = Phaser.Math.RND.pick(positions);
+        this.coin?.setPosition(newPosition.x, newPosition.y);
     }
 
     movePlayer() {
