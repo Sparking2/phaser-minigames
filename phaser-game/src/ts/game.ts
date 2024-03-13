@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import SpriteWithDynamicBody = Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
 class Main extends Scene {
 	private player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
@@ -7,12 +8,14 @@ class Main extends Scene {
 	private coin?: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 	private scoreLabel?: Phaser.GameObjects.Text;
 	private score = 0;
+	private enemies!: Phaser.Physics.Arcade.Group;
 
 	preload() {
 		this.load.image("player", "assets/player.png");
 		this.load.image("wallV", "assets/wallVertical.png");
 		this.load.image("wallH", "assets/wallHorizontal.png");
 		this.load.image("coin", "assets/coin.png");
+		this.load.image("enemy", "assets/enemy.png");
 	}
 
 	create() {
@@ -29,6 +32,13 @@ class Main extends Scene {
 		});
 		this.score = 0;
 
+		this.enemies = this.physics.add.group();
+		this.time.addEvent({
+			delay: 2200,
+			callback: () => this.addEnemy(),
+			loop: true,
+		});
+
 		this.createWorld();
 	}
 
@@ -41,6 +51,11 @@ class Main extends Scene {
 		this.movePlayer();
 
 		if (this.player.y > 340 || this.player.y < 0) {
+			this.playerDie();
+		}
+
+		this.physics.collide(this.enemies, this.walls);
+		if (this.physics.overlap(this.player, this.enemies)) {
 			this.playerDie();
 		}
 	}
@@ -95,6 +110,22 @@ class Main extends Scene {
 
 	playerDie() {
 		this.scene.start("main");
+	}
+
+	addEnemy() {
+		const enemy: SpriteWithDynamicBody = this.enemies?.create(
+			250,
+			-10,
+			"enemy",
+		);
+		enemy.body.gravity.y = 500;
+		enemy.body.velocity.x = Phaser.Math.RND.pick([-100, 100]);
+		enemy.body.bounce.x = 1;
+
+		this.time.addEvent({
+			delay: 10000,
+			callback: () => enemy.destroy(),
+		});
 	}
 }
 
