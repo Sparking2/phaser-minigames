@@ -9,6 +9,26 @@ class Play extends Scene {
 	private scoreLabel?: Phaser.GameObjects.Text;
 	private score = 0;
 	private enemies!: Phaser.Physics.Arcade.Group;
+	private jumpSound:
+		| Phaser.Sound.NoAudioSound
+		| Phaser.Sound.HTML5AudioSound
+		| Phaser.Sound.WebAudioSound
+		| undefined;
+	private coinSound:
+		| Phaser.Sound.NoAudioSound
+		| Phaser.Sound.HTML5AudioSound
+		| Phaser.Sound.WebAudioSound
+		| undefined;
+	private deadSound:
+		| Phaser.Sound.NoAudioSound
+		| Phaser.Sound.HTML5AudioSound
+		| Phaser.Sound.WebAudioSound
+		| undefined;
+	// private music:
+	// 	| Phaser.Sound.NoAudioSound
+	// 	| Phaser.Sound.HTML5AudioSound
+	// 	| Phaser.Sound.WebAudioSound
+	// 	| undefined;
 
 	create() {
 		this.coin = this.physics.add.sprite(60, 130, "coin");
@@ -32,6 +52,14 @@ class Play extends Scene {
 		});
 
 		this.createWorld();
+
+		this.jumpSound = this.sound.add("jump");
+		this.coinSound = this.sound.add("coin");
+		this.deadSound = this.sound.add("dead");
+
+		// this.music = this.sound.add("music");
+		// this.music.loop = true;
+		// this.music.play();
 	}
 
 	update() {
@@ -56,6 +84,7 @@ class Play extends Scene {
 		this.updateCoinPosition();
 		this.score += 5;
 		this.scoreLabel?.setText(`score: ${this.score}`);
+		this.coinSound?.play();
 	}
 
 	updateCoinPosition() {
@@ -83,6 +112,7 @@ class Play extends Scene {
 
 		if (this.arrow?.up.isDown && this.player.body.onFloor()) {
 			this.player.body.velocity.y = -320;
+			this.jumpSound?.play();
 		}
 	}
 
@@ -101,6 +131,8 @@ class Play extends Scene {
 	}
 
 	playerDie() {
+		this.deadSound?.play();
+		// this.music?.stop()
 		this.scene.start("menu", { score: this.score });
 	}
 
