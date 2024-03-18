@@ -79,12 +79,12 @@ class Play extends Scene {
 			repeat: -1,
 		});
 
-		this.emitter = this.add.particles(0,0,'pixel',{
+		this.emitter = this.add.particles(0, 0, "pixel", {
 			quantity: 15,
 			speed: { min: -150, max: 150 },
 			scale: { start: 2, end: 0.1 },
 			lifespan: 800,
-			emitting: false
+			emitting: false,
 		});
 	}
 
@@ -143,7 +143,7 @@ class Play extends Scene {
 	}
 
 	movePlayer() {
-		if(!this.player.active) return;
+		if (!this.player.active) return;
 
 		if (this.arrow?.left.isDown) {
 			this.player.body.velocity.x = -200;
@@ -177,9 +177,9 @@ class Play extends Scene {
 	}
 
 	playerDie() {
-		if(!this.player.active) return;
+		if (!this.player.active) return;
 
-		this.player.destroy()
+		this.player.destroy();
 
 		this.deadSound?.play();
 		// this.music?.stop()
@@ -188,8 +188,8 @@ class Play extends Scene {
 
 		this.time.addEvent({
 			delay: 2000,
-			callback: () => this.scene.start("menu", { score: this.score })
-		})
+			callback: () => this.scene.start("menu", { score: this.score }),
+		});
 	}
 
 	addEnemy() {
