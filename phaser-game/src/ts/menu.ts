@@ -7,7 +7,7 @@ class Menu extends Scene {
 		const score = data.score ? data.score : 0;
 		this.add.image(250, 170, "background");
 
-		const nameLabel = this.add.text(250, 80, "Super Coin Box", {
+		const nameLabel = this.add.text(250, -50, "Super Coin Box", {
 			font: "50px Arial",
 			color: "#fff",
 		});
@@ -25,6 +25,13 @@ class Menu extends Scene {
 		startLabel.setOrigin(0.5, 0.5);
 
 		this.upKey = this.input.keyboard?.addKey("up");
+
+		this.tweens.add({
+			targets: nameLabel,
+			y: 80,
+			duration: 1000,
+			ease: 'bounce.out',
+		});
 	}
 
 	update() {
