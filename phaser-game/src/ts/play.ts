@@ -102,6 +102,21 @@ class Play extends Scene {
 		this.score += 5;
 		this.scoreLabel?.setText(`score: ${this.score}`);
 		this.coinSound?.play();
+
+		this.coin?.setScale(0);
+
+		this.tweens.add({
+			targets: this.coin,
+			scale: 1,
+			duration: 300,
+		});
+
+		this.tweens.add({
+			targets: this.player,
+			scale: 1.3,
+			duration: 100,
+			yoyo: true,
+		});
 	}
 
 	updateCoinPosition() {
