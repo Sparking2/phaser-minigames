@@ -32,6 +32,14 @@ class Menu extends Scene {
 			duration: 1000,
 			ease: 'bounce.out',
 		});
+
+		this.tweens.add({
+			targets: startLabel,
+			angle: {from: -2, to: 2},
+			duration: 1000,
+			yoyo: true,
+			repeat: -1
+		})
 	}
 
 	update() {
