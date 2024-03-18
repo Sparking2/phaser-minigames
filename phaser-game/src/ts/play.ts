@@ -29,6 +29,7 @@ class Play extends Scene {
 	// 	| Phaser.Sound.HTML5AudioSound
 	// 	| Phaser.Sound.WebAudioSound
 	// 	| undefined;
+	private emitter: Phaser.GameObjects.Particles.ParticleEmitter | undefined;
 
 	create() {
 		this.coin = this.physics.add.sprite(60, 130, "coin");
@@ -76,6 +77,14 @@ class Play extends Scene {
 			}),
 			frameRate: 8,
 			repeat: -1,
+		});
+
+		this.emitter = this.add.particles(0,0,'pixel',{
+			quantity: 15,
+			speed: { min: -150, max: 150 },
+			scale: { start: 2, end: 0.1 },
+			lifespan: 800,
+			emitting: false
 		});
 	}
 
@@ -134,6 +143,8 @@ class Play extends Scene {
 	}
 
 	movePlayer() {
+		if(!this.player.active) return;
+
 		if (this.arrow?.left.isDown) {
 			this.player.body.velocity.x = -200;
 			this.player.anims.play("left", true);
@@ -166,9 +177,19 @@ class Play extends Scene {
 	}
 
 	playerDie() {
+		if(!this.player.active) return;
+
+		this.player.destroy()
+
 		this.deadSound?.play();
 		// this.music?.stop()
-		this.scene.start("menu", { score: this.score });
+		this.emitter?.setPosition(this.player.x, this.player.y);
+		this.emitter?.explode();
+
+		this.time.addEvent({
+			delay: 2000,
+			callback: () => this.scene.start("menu", { score: this.score })
+		})
 	}
 
 	addEnemy() {
