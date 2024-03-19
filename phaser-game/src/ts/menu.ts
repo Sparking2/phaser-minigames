@@ -5,12 +5,12 @@ class Menu extends Scene {
 	create(data: { score?: number }) {
 		const score = data.score ? data.score : 0;
 
-		if(localStorage.getItem('bestScore') === null){
-			localStorage.setItem('bestScore', "0");
+		if (localStorage.getItem("bestScore") === null) {
+			localStorage.setItem("bestScore", "0");
 		}
 
-		if (score > Number(localStorage.getItem('bestScore'))) {
-			localStorage.setItem('bestScore', score.toString())
+		if (score > Number(localStorage.getItem("bestScore"))) {
+			localStorage.setItem("bestScore", score.toString());
 		}
 
 		this.add.image(250, 170, "background");
@@ -21,11 +21,13 @@ class Menu extends Scene {
 		});
 		nameLabel.setOrigin(0.5, 0.5);
 
-		const scoreText = `score: ${score} \n best score: ${localStorage.getItem('bestScore')}`;
+		const scoreText = `score: ${score} \n best score: ${localStorage.getItem(
+			"bestScore",
+		)}`;
 		const scoreLabel = this.add.text(250, 200, scoreText, {
-			font: '25px Arial',
-			color: '#fff',
-			align: 'center'
+			font: "25px Arial",
+			color: "#fff",
+			align: "center",
 		});
 		scoreLabel.setOrigin(0.5, 0.5);
 
@@ -52,8 +54,6 @@ class Menu extends Scene {
 			yoyo: true,
 			repeat: -1,
 		});
-
-
 	}
 
 	update() {
