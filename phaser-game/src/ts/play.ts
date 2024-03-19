@@ -30,6 +30,7 @@ class Play extends Scene {
 	// 	| Phaser.Sound.WebAudioSound
 	// 	| undefined;
 	private emitter: Phaser.GameObjects.Particles.ParticleEmitter | undefined;
+	private nextEnemy: number = 0;
 
 	create() {
 		this.coin = this.physics.add.sprite(60, 130, "coin");
@@ -46,11 +47,6 @@ class Play extends Scene {
 		this.score = 0;
 
 		this.enemies = this.physics.add.group();
-		this.time.addEvent({
-			delay: 2200,
-			callback: () => this.addEnemy(),
-			loop: true,
-		});
 
 		this.createWorld();
 
@@ -89,6 +85,20 @@ class Play extends Scene {
 	}
 
 	update() {
+		let now = Date.now();
+
+		if (this.nextEnemy < now) {
+			let startDifficulty = 4000;
+			let endDifficulty = 1000;
+			let scoreToReachEndDifficulty = 100;
+
+			let progress = Math.min(this.score / scoreToReachEndDifficulty, 1)
+			let delay = startDifficulty - (startDifficulty - endDifficulty) * progress;
+
+			this.addEnemy();
+			this.nextEnemy = now + delay;
+		}
+
 		if (this.physics.overlap(this.player, this.coin)) {
 			this.takeCoin();
 		}
