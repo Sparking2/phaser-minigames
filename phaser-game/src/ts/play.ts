@@ -30,7 +30,7 @@ class Play extends Scene {
 	// 	| Phaser.Sound.WebAudioSound
 	// 	| undefined;
 	private emitter: Phaser.GameObjects.Particles.ParticleEmitter | undefined;
-	private nextEnemy: number = 0;
+	private nextEnemy = 0;
 
 	create() {
 		this.coin = this.physics.add.sprite(60, 130, "coin");
@@ -85,15 +85,16 @@ class Play extends Scene {
 	}
 
 	update() {
-		let now = Date.now();
+		const now = Date.now();
 
 		if (this.nextEnemy < now) {
-			let startDifficulty = 4000;
-			let endDifficulty = 1000;
-			let scoreToReachEndDifficulty = 100;
+			const startDifficulty = 4000;
+			const endDifficulty = 1000;
+			const scoreToReachEndDifficulty = 100;
 
-			let progress = Math.min(this.score / scoreToReachEndDifficulty, 1)
-			let delay = startDifficulty - (startDifficulty - endDifficulty) * progress;
+			const progress = Math.min(this.score / scoreToReachEndDifficulty, 1);
+			const delay =
+				startDifficulty - (startDifficulty - endDifficulty) * progress;
 
 			this.addEnemy();
 			this.nextEnemy = now + delay;
