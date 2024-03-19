@@ -186,6 +186,9 @@ class Play extends Scene {
 		this.emitter?.setPosition(this.player.x, this.player.y);
 		this.emitter?.explode();
 
+		this.cameras.main.flash(300,255,50,35);
+		this.cameras.main.shake(300, 0.02);
+
 		this.time.addEvent({
 			delay: 2000,
 			callback: () => this.scene.start("menu", { score: this.score }),
