@@ -3,18 +3,30 @@ import { Scene } from "phaser";
 class Menu extends Scene {
 	private upKey: Phaser.Input.Keyboard.Key | undefined;
 	create(data: { score?: number }) {
-		console.log(data);
 		const score = data.score ? data.score : 0;
+
+		if(localStorage.getItem('bestScore') === null){
+			localStorage.setItem('bestScore', "0");
+		}
+
+		if (score > Number(localStorage.getItem('bestScore'))) {
+			localStorage.setItem('bestScore', score.toString())
+		}
+
 		this.add.image(250, 170, "background");
 
 		const nameLabel = this.add.text(250, -50, "Super Coin Box", {
-			font: "50px Arial",
+			font: "70px Geo",
 			color: "#fff",
 		});
 		nameLabel.setOrigin(0.5, 0.5);
 
-		const scoreText = `score: ${score}`;
-		const scoreLabel = this.add.text(250, 200, scoreText);
+		const scoreText = `score: ${score} \n best score: ${localStorage.getItem('bestScore')}`;
+		const scoreLabel = this.add.text(250, 200, scoreText, {
+			font: '25px Arial',
+			color: '#fff',
+			align: 'center'
+		});
 		scoreLabel.setOrigin(0.5, 0.5);
 
 		const startText = "press the up arrow key to start";
@@ -40,6 +52,8 @@ class Menu extends Scene {
 			yoyo: true,
 			repeat: -1,
 		});
+
+
 	}
 
 	update() {
