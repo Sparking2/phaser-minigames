@@ -10,8 +10,8 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.6.1",
-		"typescript": "^5.2.2",
-		"vite": "^5.1.4"
+		"typescript": "^5.4.2",
+		"vite": "^5.2.2"
 	},
 	"dependencies": {
 		"phaser": "^3.80.1"
