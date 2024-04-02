@@ -8,8 +8,8 @@ class Load extends Scene {
 			frameWidth: 20,
 			frameHeight: 20,
 		});
-		this.load.image("wallV", "assets/wallVertical.png");
-		this.load.image("wallH", "assets/wallHorizontal.png");
+		// this.load.image("wallV", "assets/wallVertical.png");
+		// this.load.image("wallH", "assets/wallHorizontal.png");
 		this.load.image("coin", "assets/coin.png");
 		this.load.image("enemy", "assets/enemy.png");
 		this.load.image("pixel", "assets/pixel.png");
@@ -17,6 +17,9 @@ class Load extends Scene {
 		this.load.audio("jump", ["assets/jump.ogg", "assets/jump.mp3"]);
 		this.load.audio("coin", ["assets/coin.ogg", "assets/coin.mp3"]);
 		this.load.audio("dead", ["assets/dead.ogg", "assets/dead.mp3"]);
+
+		this.load.image("tileset", "assets/tileset.png");
+		this.load.tilemapTiledJSON("map", "map.json");
 
 		// this.load.audio("music", ["assets/music.ogg", "assets/music.mp3"]);
 

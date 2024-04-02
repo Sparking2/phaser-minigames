@@ -4,7 +4,7 @@ import SpriteWithDynamicBody = Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
 class Play extends Scene {
 	private player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 	private arrow?: Phaser.Types.Input.Keyboard.CursorKeys;
-	private walls?: Phaser.Physics.Arcade.StaticGroup;
+	private walls?: Phaser.Tilemaps.TilemapLayer | null;
 	private coin?: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 	private scoreLabel?: Phaser.GameObjects.Text;
 	private score = 0;
@@ -104,16 +104,19 @@ class Play extends Scene {
 			this.takeCoin();
 		}
 
-		this.physics.collide(this.player, this.walls);
 		this.movePlayer();
 
 		if (this.player.y > 340 || this.player.y < 0) {
 			this.playerDie();
 		}
 
-		this.physics.collide(this.enemies, this.walls);
 		if (this.physics.overlap(this.player, this.enemies)) {
 			this.playerDie();
+		}
+
+		if (this.walls) {
+			this.physics.collide(this.enemies, this.walls);
+			this.physics.collide(this.player, this.walls);
 		}
 	}
 
@@ -174,17 +177,18 @@ class Play extends Scene {
 	}
 
 	createWorld() {
-		this.walls = this.physics.add.staticGroup();
-		this.walls.create(10, 170, "wallV");
-		this.walls.create(490, 170, "wallV");
-		this.walls.create(50, 10, "wallH");
-		this.walls.create(450, 10, "wallH");
-		this.walls.create(50, 330, "wallH");
-		this.walls.create(450, 330, "wallH");
-		this.walls.create(0, 170, "wallH");
-		this.walls.create(500, 170, "wallH");
-		this.walls.create(250, 90, "wallH");
-		this.walls.create(250, 250, "wallH");
+		const map = this.add.tilemap("map");
+		if (!map) {
+			console.error("Can't create map");
+			return;
+		}
+		const tileset = map.addTilesetImage("tileset", "tileset");
+		if (!tileset) {
+			console.error("Can't create a tileset");
+			return;
+		}
+		this.walls = map.createLayer("Tile Layer 1", tileset);
+		this.walls?.setCollision(1);
 	}
 
 	playerDie() {
