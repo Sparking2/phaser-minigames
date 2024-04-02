@@ -1,7 +1,19 @@
 import { Scene } from "phaser";
 
 class Load extends Scene {
+	private loadLabel?: Phaser.GameObjects.Text;
 	preload() {
+		this.loadLabel = this.add.text(250, 170, "loading\n0%", {
+			font: "30px Arial",
+			color: "#fff",
+		});
+		this.loadLabel.setOrigin(0.5, 0.5);
+
+		this.load.on("progress", this.progress, this);
+		this.load.on("complete", ()=>{
+			this.scene.start('menu')
+		})
+
 		this.load.image("background", "assets/background.png");
 		// this.load.image("player", "assets/player.png");
 		this.load.spritesheet("player", "assets/player2.png", {
@@ -22,16 +34,15 @@ class Load extends Scene {
 		this.load.tilemapTiledJSON("map", "map.json");
 
 		// this.load.audio("music", ["assets/music.ogg", "assets/music.mp3"]);
-
-		const loadLabel = this.add.text(250, 170, "loading", {
-			font: "30px Arial",
-			color: "#fff",
-		});
-		loadLabel.setOrigin(0.5, 0.5);
 	}
 
 	create() {
-		this.scene.start("menu");
+		// this.scene.start('menu')
+	}
+
+	progress(value: number) {
+		const percentage = `${Math.round(value * 100)}%`;
+		this.loadLabel?.setText(`loading\n${percentage}`);
 	}
 }
 
