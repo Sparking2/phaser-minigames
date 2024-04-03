@@ -181,7 +181,7 @@ class Play extends Scene {
 		}
 
 		if (this.arrow?.up.isDown) {
-			this.jumpPlayer()
+			this.jumpPlayer();
 		}
 	}
 
@@ -235,8 +235,8 @@ class Play extends Scene {
 		});
 	}
 
-	jumpPlayer(){
-		if(this.player.body.onFloor()){
+	jumpPlayer() {
+		if (this.player.body.onFloor()) {
 			this.player.body.velocity.y = -320;
 			this.jumpSound?.play();
 		}
@@ -249,19 +249,43 @@ class Play extends Scene {
 		const jumpButton = this.add.sprite(400, 290, "jumpButton");
 		jumpButton.setInteractive();
 		jumpButton.alpha = 0.5;
-		jumpButton.on('pointerdown', this.jumpPlayer,this);
+		jumpButton.on("pointerdown", this.jumpPlayer, this);
 
 		const leftButton = this.add.sprite(100, 290, "leftButton");
 		leftButton.setInteractive();
 		leftButton.alpha = 0.5;
-		leftButton.on('pointerover', ()=>this.moveLeft = true, this);
-		leftButton.on('pointerout', ()=>this.moveLeft = false,this);
+		leftButton.on(
+			"pointerover",
+			() => {
+				this.moveLeft = true;
+			},
+			this,
+		);
+		leftButton.on(
+			"pointerout",
+			() => {
+				this.moveLeft = false;
+			},
+			this,
+		);
 
 		const rightButton = this.add.sprite(180, 290, "rightButton");
 		rightButton.setInteractive();
 		rightButton.alpha = 0.5;
-		rightButton.on('pointerover',()=>this.moveRight = true, this);
-		rightButton.on('pointerout', ()=>this.moveRight = false, this);
+		rightButton.on(
+			"pointerover",
+			() => {
+				this.moveRight = true;
+			},
+			this,
+		);
+		rightButton.on(
+			"pointerout",
+			() => {
+				this.moveRight = false;
+			},
+			this,
+		);
 	}
 }
 
