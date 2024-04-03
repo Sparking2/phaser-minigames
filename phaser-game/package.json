@@ -9,7 +9,7 @@
 		"preview": "vite preview"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.6.1",
+		"@biomejs/biome": "1.6.4",
 		"typescript": "^5.4.2",
 		"vite": "^5.2.2"
 	},

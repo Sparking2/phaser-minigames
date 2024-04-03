@@ -34,6 +34,10 @@ class Load extends Scene {
 		this.load.tilemapTiledJSON("map", "map.json");
 
 		// this.load.audio("music", ["assets/music.ogg", "assets/music.mp3"]);
+
+		this.load.image("jumpButton", "assets/jumpButton.png");
+		this.load.image("rightButton", "assets/rightButton.png");
+		this.load.image("leftButton", "assets/leftButton.png");
 	}
 
 	create() {

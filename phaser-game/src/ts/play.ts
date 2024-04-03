@@ -32,6 +32,10 @@ class Play extends Scene {
 	private emitter: Phaser.GameObjects.Particles.ParticleEmitter | undefined;
 	private nextEnemy = 0;
 
+	// movement
+	private moveLeft = false;
+	private moveRight = false;
+
 	create() {
 		this.coin = this.physics.add.sprite(60, 130, "coin");
 
@@ -82,6 +86,12 @@ class Play extends Scene {
 			lifespan: 800,
 			emitting: false,
 		});
+
+		if (!this.sys.game.device.os.desktop) {
+			this.addMobileInputs();
+		}
+
+		this.input.addPointer(1);
 	}
 
 	update() {
@@ -159,10 +169,10 @@ class Play extends Scene {
 	movePlayer() {
 		if (!this.player.active) return;
 
-		if (this.arrow?.left.isDown) {
+		if (this.arrow?.left.isDown || this.moveLeft) {
 			this.player.body.velocity.x = -200;
 			this.player.anims.play("left", true);
-		} else if (this.arrow?.right.isDown) {
+		} else if (this.arrow?.right.isDown || this.moveRight) {
 			this.player.body.velocity.x = 200;
 			this.player.anims.play("right", true);
 		} else {
@@ -170,9 +180,8 @@ class Play extends Scene {
 			this.player.setFrame(0);
 		}
 
-		if (this.arrow?.up.isDown && this.player.body.onFloor()) {
-			this.player.body.velocity.y = -320;
-			this.jumpSound?.play();
+		if (this.arrow?.up.isDown) {
+			this.jumpPlayer()
 		}
 	}
 
@@ -224,6 +233,35 @@ class Play extends Scene {
 			delay: 10000,
 			callback: () => enemy.destroy(),
 		});
+	}
+
+	jumpPlayer(){
+		if(this.player.body.onFloor()){
+			this.player.body.velocity.y = -320;
+			this.jumpSound?.play();
+		}
+	}
+
+	addMobileInputs() {
+		this.moveLeft = false;
+		this.moveRight = false;
+
+		const jumpButton = this.add.sprite(400, 290, "jumpButton");
+		jumpButton.setInteractive();
+		jumpButton.alpha = 0.5;
+		jumpButton.on('pointerdown', this.jumpPlayer,this);
+
+		const leftButton = this.add.sprite(100, 290, "leftButton");
+		leftButton.setInteractive();
+		leftButton.alpha = 0.5;
+		leftButton.on('pointerover', ()=>this.moveLeft = true, this);
+		leftButton.on('pointerout', ()=>this.moveLeft = false,this);
+
+		const rightButton = this.add.sprite(180, 290, "rightButton");
+		rightButton.setInteractive();
+		rightButton.alpha = 0.5;
+		rightButton.on('pointerover',()=>this.moveRight = true, this);
+		rightButton.on('pointerout', ()=>this.moveRight = false, this);
 	}
 }
 

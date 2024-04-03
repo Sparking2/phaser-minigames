@@ -31,7 +31,12 @@ class Menu extends Scene {
 		});
 		scoreLabel.setOrigin(0.5, 0.5);
 
-		const startText = "press the up arrow key to start";
+		let startText: string;
+		if (this.sys.game.device.os.desktop) {
+			startText = "press the up arrow key to start";
+		} else {
+			startText = "touch the screen to start";
+		}
 		const startLabel = this.add.text(250, 260, startText, {
 			font: "25px Arial",
 			color: "#fff",
@@ -57,7 +62,14 @@ class Menu extends Scene {
 	}
 
 	update() {
-		if (this.upKey?.isDown) {
+		if (!this.sys.game.device.os.desktop && this.input.activePointer.y < 60) {
+			return;
+		}
+
+		if (
+			this.upKey?.isDown ||
+			(!this.sys.game.device.os.desktop && this.input.activePointer.isDown)
+		) {
 			this.scene.start("play");
 		}
 	}
