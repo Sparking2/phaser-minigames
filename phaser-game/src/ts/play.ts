@@ -1,4 +1,4 @@
-import {Scene} from "phaser";
+import { Scene } from "phaser";
 import SpriteWithDynamicBody = Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 import Orientation = Phaser.Scale.Orientation;
 
@@ -93,12 +93,14 @@ class Play extends Scene {
 			this.addMobileInputs();
 			this.input.addPointer(1);
 
-			this.rotateLabel = this.add.text(250, 170,'',{
-				font: '30px Arial', color: '#fff', backgroundColor: '#000'
+			this.rotateLabel = this.add.text(250, 170, "", {
+				font: "30px Arial",
+				color: "#fff",
+				backgroundColor: "#000",
 			});
-			this.rotateLabel.setOrigin(0.5,0.5);
+			this.rotateLabel.setOrigin(0.5, 0.5);
 
-			this.scale.on('orientationchange',this.orientationChange,this);
+			this.scale.on("orientationchange", this.orientationChange, this);
 
 			this.orientationChange();
 		}
@@ -298,12 +300,12 @@ class Play extends Scene {
 		);
 	}
 
-	orientationChange(){
-		if(this.scale.orientation === Orientation.PORTRAIT) {
-			this.rotateLabel?.setText(' rotate your device in landscape ');
+	orientationChange() {
+		if (this.scale.orientation === Orientation.PORTRAIT) {
+			this.rotateLabel?.setText(" rotate your device in landscape ");
 			this.scene.pause();
 		} else if (this.scale.orientation === Orientation.LANDSCAPE) {
-			this.rotateLabel?.setText('');
+			this.rotateLabel?.setText("");
 			this.scene.resume();
 		}
 	}
