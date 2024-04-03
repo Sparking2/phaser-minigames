@@ -22,3 +22,7 @@ RUN pnpm run build
 
 # Expose the port your website listens on (if applicable)
 EXPOSE 8080
+
+RUN pwd
+
+RUN ls
