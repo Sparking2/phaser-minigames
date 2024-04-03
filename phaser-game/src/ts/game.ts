@@ -29,3 +29,5 @@ game.scene.add("menu", Menu);
 game.scene.add("play", Play);
 
 game.scene.start("load");
+
+globalThis.__PHASER_GAME__ = game;
