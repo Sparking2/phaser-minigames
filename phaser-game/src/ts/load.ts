@@ -10,9 +10,9 @@ class Load extends Scene {
 		this.loadLabel.setOrigin(0.5, 0.5);
 
 		this.load.on("progress", this.progress, this);
-		this.load.on("complete", ()=>{
-			this.scene.start('menu')
-		})
+		this.load.on("complete", () => {
+			this.scene.start("menu");
+		});
 
 		this.load.image("background", "assets/background.png");
 		// this.load.image("player", "assets/player.png");
