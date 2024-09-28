@@ -1,8 +1,9 @@
-body,html {
-    margin: 0;
-    position: relative;
-    background-color: #008080;
+body,
+html {
+	margin: 0;
+	position: relative;
+	background-color: #008080;
 }
 canvas {
-    margin: auto;
+	margin: auto;
 }
